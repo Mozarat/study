@@ -2,49 +2,135 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <title>Cybersecurity Risk Assessment Trainer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber-Pretest Clone</title>
     <style>
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --accent: #38bdf8;
-            --text: #f8fafc;
+        body { 
+            background: #f4f6f9; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            color: #333; 
         }
-        body { background-color: var(--bg-color); color: var(--text); font-family: sans-serif; display: flex; justify-content: center; padding: 20px; }
-        .container { width: 100%; max-width: 700px; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
-        h1 { color: var(--accent); text-align: center; }
-        .option-item { border: 1px solid #475569; padding: 15px; margin: 10px 0; border-radius: 6px; cursor: pointer; transition: 0.2s; }
-        .option-item:hover { background: #334155; }
-        .option-item.selected { border-color: var(--accent); background: #0ea5e922; }
-        .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; background: var(--accent); color: #000; font-weight: bold; margin: 5px; }
-        .nav-group { display: flex; justify-content: space-between; margin-top: 20px; }
-        #feedback { margin-top: 15px; font-weight: bold; padding: 10px; border-radius: 6px; display: none; }
+        
+        /* شريط التنقل العلوي */
+        .header { 
+            background: #fff; 
+            padding: 15px 40px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 3px solid #0056b3; 
+        }
+        .header h2 { margin: 0; color: #0056b3; font-size: 1.4rem; font-weight: 700; }
+        .timer { font-size: 1.1rem; font-weight: bold; color: #dc3545; }
+
+        /* الحاوية الرئيسية للاختبار */
+        .main-container { 
+            max-width: 850px; 
+            margin: 40px auto; 
+            background: #fff; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
+            overflow: hidden; 
+        }
+        
+        /* شريط التقدم */
+        .progress-bar { background: #e9ecef; height: 6px; width: 100%; }
+        .progress-fill { background: #0056b3; height: 100%; width: 5%; transition: width 0.4s ease; }
+        
+        /* محتوى السؤال */
+        .content { padding: 40px; }
+        .question-meta { font-size: 0.95rem; color: #6c757d; margin-bottom: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .question-text { font-size: 1.35rem; margin-bottom: 30px; line-height: 1.6; color: #212529; font-weight: 500; }
+        
+        /* الخيارات */
+        .options-list { display: flex; flex-direction: column; gap: 12px; }
+        .option-label { 
+            display: flex; 
+            align-items: center; 
+            padding: 18px 20px; 
+            border: 1px solid #ced4da; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            transition: all 0.2s ease-in-out; 
+            background: #fff; 
+            font-size: 1.1rem;
+        }
+        .option-label:hover { background: #f8f9fa; border-color: #adb5bd; }
+        .option-label input[type="radio"] { margin-right: 15px; transform: scale(1.3); cursor: pointer; accent-color: #0056b3; }
+        .option-label.selected { border-color: #0056b3; background: #f0f7ff; box-shadow: 0 0 0 1px #0056b3; }
+
+        /* منطقة الأزرار السفلية */
+        .footer { 
+            background: #f8f9fa; 
+            padding: 20px 40px; 
+            border-top: 1px solid #e9ecef; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+        }
+        .btn { padding: 12px 30px; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; transition: 0.2s; font-weight: 600; }
+        .btn-outline { background: transparent; border: 1px solid #6c757d; color: #6c757d; }
+        .btn-outline:hover { background: #6c757d; color: #fff; }
+        .btn-primary { background: #0056b3; color: #fff; }
+        .btn-primary:hover { background: #004494; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* رسالة التأكيد */
+        #feedback { margin-top: 20px; padding: 15px; border-radius: 6px; font-weight: bold; display: none; text-align: center; }
+        
+        #setup-screen, #result-screen { padding: 40px; text-align: center; }
+        .quiz-screen { display: none; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div id="setup-screen">
-        <h1>Cybersecurity Pre-test</h1>
-        <label>Number of Questions:</label>
-        <input type="number" id="question-count" value="20" style="width:100%; padding:10px; margin:10px 0; border-radius:5px;">
-        <button class="btn" style="width:100%" onclick="startQuiz()">Start Test</button>
+    <div id="setup-screen" class="main-container">
+        <h2 style="color: #0056b3; margin-bottom: 20px;">Cybersecurity Risk Assessment Pre-Test</h2>
+        <p style="color: #6c757d; margin-bottom: 30px;">Select your preferences and begin the assessment.</p>
+        <div style="max-width: 300px; margin: 0 auto 30px auto; text-align: left;">
+            <label style="font-weight: 600; margin-bottom: 8px; display: block;">Number of Questions:</label>
+            <input type="number" id="question-count" value="20" style="width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 4px; font-size: 1rem;">
+        </div>
+        <button class="btn btn-primary" onclick="startQuiz()" style="width: 300px; font-size: 1.1rem;">Start Assessment</button>
     </div>
 
-    <div id="quiz-screen" style="display:none;">
-        <div id="progress">Question 1/20</div>
-        <h3 id="question-text"></h3>
-        <div id="options-container"></div>
-        <div id="feedback"></div>
-        <div class="nav-group">
-            <div>
-                <button class="btn" onclick="prevQuestion()">Previous</button>
-                <button class="btn" onclick="nextQuestion()">Next</button>
+    <div id="quiz-screen" class="quiz-screen">
+        <div class="header">
+            <h2>Risk Assessment Module</h2>
+            <div class="timer" id="timer-display">45:00</div>
+        </div>
+        
+        <div class="main-container" style="margin-top: 20px;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-bar"></div>
             </div>
-            <button class="btn" style="background:#22c55e" onclick="confirmAnswer()">Confirm Answer</button>
+            
+            <div class="content">
+                <div class="question-meta" id="question-meta">QUESTION 1 OF 20</div>
+                <div class="question-text" id="question-text">Loading question...</div>
+                
+                <div class="options-list" id="options-container">
+                    </div>
+                
+                <div id="feedback"></div>
+            </div>
+            
+            <div class="footer">
+                <button class="btn btn-outline" id="prev-btn" onclick="prevQuestion()">Back</button>
+                <button class="btn btn-primary" id="confirm-btn" onclick="confirmAnswer()" style="background: #28a745; border-color: #28a745;">Submit Answer</button>
+                <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">Next</button>
+            </div>
         </div>
     </div>
-</div>
+
+    <div id="result-screen" class="main-container" style="display: none;">
+        <h2 style="color: #28a745; margin-bottom: 20px; font-size: 2rem;">Assessment Complete</h2>
+        <p style="color: #6c757d; font-size: 1.2rem;">Your final score is:</p>
+        <div id="score-display" style="font-size: 4rem; font-weight: bold; color: #0056b3; margin: 20px 0;">0%</div>
+        <button class="btn btn-primary" onclick="location.reload()" style="margin-top: 20px;">Return to Home</button>
+    </div>
 
 <script>
     // قاعدة البيانات الكاملة لجميع الأسئلة والخيارات والحلول النموذجية المأخوذة مباشرة من الملف دون أي تعديل أو اختصار
@@ -244,48 +330,138 @@
     ];
 
    
-let quizQuestions = [], currentQuestionIndex = 0, score = 0, userAnswers = {};
+    let quiz = [];
+    let currentIdx = 0;
+    let answers = {};
+    let isConfirmed = {}; // لتتبع الأسئلة التي تم تأكيد إجابتها
 
     function startQuiz() {
         const count = document.getElementById('question-count').value;
-        quiz = allQuestions.sort(() => 0.5 - Math.random()).slice(0, count);
+        quiz = [...allQuestions].sort(() => 0.5 - Math.random()).slice(0, count);
         document.getElementById('setup-screen').style.display = 'none';
         document.getElementById('quiz-screen').style.display = 'block';
-        showQ();
+        showQuestion();
     }
 
-    function showQ() {
+    function showQuestion() {
         const q = quiz[currentIdx];
-        document.getElementById('progress').innerText = `Question ${currentIdx + 1} / ${quiz.length}`;
+        const total = quiz.length;
+        
+        // تحديث النصوص والتقدم
+        document.getElementById('question-meta').innerText = `QUESTION ${currentIdx + 1} OF ${total}`;
+        document.getElementById('progress-bar').style.width = `${((currentIdx + 1) / total) * 100}%`;
         document.getElementById('question-text').innerText = q.q;
+        
+        // إدارة أزرار التنقل
+        document.getElementById('prev-btn').disabled = currentIdx === 0;
+        document.getElementById('next-btn').innerText = (currentIdx === total - 1) ? "Finish" : "Next";
+        
+        // إخفاء رسالة التغذية الراجعة
+        const feedback = document.getElementById('feedback');
+        feedback.style.display = 'none';
+        
+        // بناء الخيارات
         const cont = document.getElementById('options-container');
         cont.innerHTML = '';
+        
         q.o.forEach((opt, i) => {
-            const div = document.createElement('div');
-            div.className = `option-item ${answers[currentIdx] === i ? 'selected' : ''}`;
-            div.innerText = opt;
-            div.onclick = () => {
-                answers[currentIdx] = i;
-                document.querySelectorAll('.option-item').forEach(el => el.classList.remove('selected'));
-                div.classList.add('selected');
-            };
-            cont.appendChild(div);
-        });
-    }
+            const label = document.createElement('label');
+            label.className = `option-label ${answers[currentIdx] === i ? 'selected' : ''}`;
+            
+            // إذا تم تأكيد السؤال مسبقاً، نمنع التعديل
+            if(isConfirmed[currentIdx]) {
+                label.style.pointerEvents = 'none';
+                if(i === q.a) label.style.borderColor = '#28a745'; // الأخضر للإجابة الصحيحة
+            }
 
-    function confirmAnswer() {
-        const f = document.getElementById('feedback');
-        f.style.display = 'block';
-        if(answers[currentIdx] === quiz[currentIdx].a) {
-            f.innerText = "Correct!"; f.style.background = "#065f46";
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.name = 'question_option';
+            radio.value = i;
+            if (answers[currentIdx] === i) radio.checked = true;
+            
+            radio.onchange = () => {
+                answers[currentIdx] = i;
+                document.querySelectorAll('.option-label').forEach(el => el.classList.remove('selected'));
+                label.classList.add('selected');
+                document.getElementById('confirm-btn').disabled = false;
+            };
+
+            label.appendChild(radio);
+            label.appendChild(document.createTextNode(opt));
+            cont.appendChild(label);
+        });
+
+        // حالة زر التأكيد
+        if (isConfirmed[currentIdx]) {
+            document.getElementById('confirm-btn').style.display = 'none';
+            showFeedback(answers[currentIdx] === q.a, q.o[q.a]);
         } else {
-            f.innerText = "Wrong. Correct was: " + quiz[currentIdx].o[quiz[currentIdx].a];
-            f.style.background = "#991b1b";
+            document.getElementById('confirm-btn').style.display = 'block';
+            document.getElementById('confirm-btn').disabled = (answers[currentIdx] === undefined);
         }
     }
 
-    function nextQuestion() { if(currentIdx < quiz.length -1) { currentIdx++; showQ(); document.getElementById('feedback').style.display = 'none'; } }
-    function prevQuestion() { if(currentIdx > 0) { currentIdx--; showQ(); document.getElementById('feedback').style.display = 'none'; } }
+    function confirmAnswer() {
+        if (answers[currentIdx] === undefined) return;
+        
+        isConfirmed[currentIdx] = true;
+        const q = quiz[currentIdx];
+        const isCorrect = (answers[currentIdx] === q.a);
+        
+        // تجميد الخيارات
+        document.querySelectorAll('.option-label').forEach(label => {
+            label.style.pointerEvents = 'none';
+        });
+        
+        document.getElementById('confirm-btn').style.display = 'none';
+        showFeedback(isCorrect, q.o[q.a]);
+    }
+
+    function showFeedback(isCorrect, correctAnswerText) {
+        const f = document.getElementById('feedback');
+        f.style.display = 'block';
+        if(isCorrect) {
+            f.innerText = "Correct Response"; 
+            f.style.background = "#d4edda";
+            f.style.color = "#155724";
+            f.style.border = "1px solid #c3e6cb";
+        } else {
+            f.innerText = "Incorrect. Correct answer: " + correctAnswerText;
+            f.style.background = "#f8d7da";
+            f.style.color = "#721c24";
+            f.style.border = "1px solid #f5c6cb";
+        }
+    }
+
+    function nextQuestion() { 
+        if(currentIdx < quiz.length - 1) { 
+            currentIdx++; 
+            showQuestion(); 
+        } else {
+            endQuiz();
+        }
+    }
+    
+    function prevQuestion() { 
+        if(currentIdx > 0) { 
+            currentIdx--; 
+            showQuestion(); 
+        } 
+    }
+
+    function endQuiz() {
+        document.getElementById('quiz-screen').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'block';
+        
+        let score = 0;
+        quiz.forEach((q, index) => {
+            if(answers[index] === q.a) score++;
+        });
+        
+        const percentage = Math.round((score / quiz.length) * 100);
+        document.getElementById('score-display').innerText = `${percentage}%`;
+    }
 </script>
 
 </body>
