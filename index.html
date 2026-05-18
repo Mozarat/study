@@ -405,8 +405,8 @@
     let totalTimeInSeconds = 0;
 
     function startQuiz() {
-        const countInput = parseInt(document.getElementById('question-count').value) || 35;
-        const timeInput = parseInt(document.getElementById('time-limit').value) || 60;
+        const countInput = parseInt(document.getElementById('question-count').value) || 20;
+        const timeInput = parseInt(document.getElementById('time-limit').value) || 15;
         
         let actualCount = countInput > allQuestions.length ? allQuestions.length : countInput;
         quiz = [...allQuestions].sort(() => 0.5 - Math.random()).slice(0, actualCount);
@@ -446,20 +446,20 @@
         const q = quiz[currentIdx];
         const total = quiz.length;
         
-        // Update Meta & Progress
+        // تحديث البيانات وشريط التقدم
         document.getElementById('question-meta').innerText = `QUESTION ${currentIdx + 1} OF ${total}`;
         document.getElementById('progress-bar').style.width = `${((currentIdx + 1) / total) * 100}%`;
         document.getElementById('question-text').innerText = q.q;
         
-        // Navigation Buttons State
+        // تعطيل/تفعيل أزرار التنقل
         document.getElementById('prev-btn').disabled = (currentIdx === 0);
         document.getElementById('next-btn').disabled = (currentIdx === total - 1);
         
-        // Hide Feedback
+        // إخفاء رسالة التقييم في البداية
         const feedback = document.getElementById('feedback');
         feedback.style.display = 'none';
         
-        // Render Options
+        // عرض الخيارات
         const cont = document.getElementById('options-container');
         cont.innerHTML = '';
         
@@ -467,7 +467,7 @@
             const label = document.createElement('label');
             label.className = `option-label ${answers[currentIdx] === i ? 'selected' : ''}`;
             
-            // If already checked, disable interactions and apply colors
+            // إذا كان السؤال تم التحقق منه مسبقاً
             if(isChecked[currentIdx]) {
                 label.style.pointerEvents = 'none';
                 if(i === q.a) {
@@ -497,7 +497,6 @@
             cont.appendChild(label);
         });
 
-        // Setup Submit/Check/Finish Buttons
         const checkBtn = document.getElementById('check-btn');
         const finishBtn = document.getElementById('finish-btn');
         
@@ -509,7 +508,7 @@
             checkBtn.disabled = (answers[currentIdx] === undefined);
         }
 
-        // Show "Finish" button only on the last question, hide "Submit Answer" if it's the last question and already checked
+        // إظهار زر الإنهاء النهائي فقط في السؤال الأخير
         if (currentIdx === total - 1) {
             finishBtn.style.display = 'block';
         } else {
@@ -517,7 +516,6 @@
         }
     }
 
-    // Function to only check the answer without skipping to the next question
     function checkAnswer() {
         if (answers[currentIdx] === undefined) return;
         
@@ -525,7 +523,7 @@
         const q = quiz[currentIdx];
         const isCorrect = (answers[currentIdx] === q.a);
         
-        // Freeze Options
+        // تجميد الخيارات وتلوينها
         document.querySelectorAll('.option-label').forEach((label, i) => {
             label.style.pointerEvents = 'none';
             if(i === q.a) {
@@ -545,12 +543,12 @@
         if(isCorrect) {
             f.innerText = "Correct! Well done."; 
             f.style.background = "rgba(0, 230, 118, 0.1)";
-            f.style.color = var(--success);
+            f.style.color = "var(--success)";
             f.style.border = "1px solid var(--success)";
         } else {
             f.innerText = "Incorrect. The correct answer is: " + correctAnswerText;
             f.style.background = "rgba(255, 61, 0, 0.1)";
-            f.style.color = var(--error);
+            f.style.color = "var(--error)";
             f.style.border = "1px solid var(--error)";
         }
     }
