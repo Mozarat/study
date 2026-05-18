@@ -1,296 +1,68 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة التدريب التفاعلية - تحليل المخاطر السيبرانية</title>
+    <title>Cybersecurity Risk Assessment Trainer</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --accent-color: #38bdf8;
-            --text-color: #f8fafc;
-            --text-muted: #94a3b8;
-            --success: #22c55e;
-            --error: #ef4444;
-            --warning: #f59e0b;
-            --border-radius: 12px;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --primary-color: #2563eb;
+            --text-color: #1e293b;
+            --success: #16a34a;
+            --error: #dc2626;
+            --border: #e2e8f0;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 850px;
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            border: 1px solid #334155;
-        }
-
-        h1 {
-            text-align: center;
-            color: var(--accent-color);
-            margin-bottom: 15px;
-            font-size: 18px;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: var(--text-muted);
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
-
-        /* الإعدادات المبدئية */
-        .setup-screen {
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #cbd5e1;
-        }
-
-        input[type="number"], select {
-            width: 100%;
-            padding: 12px;
-            background: #0f172a;
-            border: 1px solid #475569;
-            color: #fff;
-            border-radius: 6px;
-            font-size: 16px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        input[type="number"]:focus, select:focus {
-            border-color: var(--accent-color);
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #0f172a;
-            padding: 12px;
-            border-radius: 6px;
-            border: 1px solid #475569;
-            cursor: pointer;
-        }
-
-        .checkbox-group input {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 14px;
-            background: var(--accent-color);
-            color: #0f172a;
-            border: none;
-            border-radius: 6px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.1s;
-            margin-top: 20px;
-        }
-
-        .btn:hover {
-            background: #7dd3fc;
-        }
-
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        /* شاشة الاختبار */
-        .quiz-screen {
-            display: none;
-        }
-
-        .quiz-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #334155;
-            margin-bottom: 20px;
-        }
-
-        .timer {
-            background: #0f172a;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            color: var(--warning);
-            border: 1px solid var(--warning);
-            font-size: 16px;
-        }
-
-        .progress {
-            font-size: 16px;
-            color: var(--accent-color);
-            font-weight: bold;
-        }
-
-        .question-box {
-            text-align: left;
-            font-size: 24px;
-            line-height: 1.6;
-            margin-bottom: 25px;
-            color: #f1f5f9;
-        }
-
-        .options-list {
-            text-align: left;
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .option-item {
-            text-align: left;
-            background: #0f172a;
-            padding: 18px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 20px;
-            display: flex;
-        }
-
-        .option-item:hover {
-            border-color: var(--accent-color);
-            background: #131e35;
-            text-align: left;
-        }
-
-        .option-item.correct {
-            background: rgba(34, 197, 94, 0.2) !important;
-            border-color: var(--success) !important;
-            color: #fff;
-        }
-
-        .option-item.wrong {
-            background: rgba(239, 68, 68, 0.2) !important;
-            border-color: var(--error) !important;
-            color: #fff;
-        }
-
-        .feedback-msg {
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 6px;
-            font-weight: bold;
-            display: none;
-            text-align: center;
-        }
-
-        /* شاشة النتائج */
-        .result-screen {
-            display: none;
-            text-align: center;
-        }
-
-        .score-circle {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 5px solid var(--accent-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 32px;
-            font-weight: bold;
-            margin: 20px auto;
-            color: var(--accent-color);
-        }
-
-        .summary-text {
-            font-size: 18px;
-            margin-bottom: 25px;
-            color: #cbd5e1;
-        }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Segoe UI', sans-serif; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
+        .container { width: 100%; max-width: 800px; background: var(--card-bg); padding: 40px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        h1 { color: var(--primary-color); margin-bottom: 10px; }
+        
+        .option-item { border: 2px solid var(--border); padding: 15px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: 0.2s; }
+        .option-item:hover { border-color: var(--primary-color); }
+        .option-item.selected { border-color: var(--primary-color); background: #eff6ff; }
+        
+        .btn { padding: 12px 24px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: 0.3s; margin: 5px; }
+        .btn-primary { background: var(--primary-color); color: white; }
+        .btn-secondary { background: var(--border); color: var(--text-color); }
+        
+        .quiz-screen, .result-screen { display: none; }
+        .nav-buttons { margin-top: 20px; display: flex; justify-content: space-between; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>المنصة التعليمية المتقدمة لمادة تحليل المخاطر</h1>
-    <div class="subtitle">بنك الأسئلة الشامل والتقييمات الذاتية والدورية</div>
-
-    <div id="setup-screen" class="setup-screen">
-        <div class="form-group">
-            <label for="question-count">عدد الأسئلة التي تود اختبارها:</label>
-            <input type="number" id="question-count" min="1" max="125" value="20">
-            <small style="color: var(--text-muted); display:block; margin-top:5px;">(بتوفيق)</small>
+    <div id="setup-screen">
+        <h1>Risk Assessment Trainer</h1>
+        <p>Configure your study session:</p>
+        <div style="margin: 20px 0;">
+            <label>Number of questions:</label>
+            <input type="number" id="question-count" value="20" style="width: 100%; padding: 10px; margin-top: 5px;">
         </div>
-
-        <div class="form-group">
-            <label for="quiz-time">مدة العداد المؤقت بالاختبار (بالدقائق):</label>
-            <input type="number" id="quiz-time" min="1" max="180" value="15">
-        </div>
-
-        <div class="form-group">
-            <label>خيارات مرونة الإجابة المتطورة:</label>
-            <label class="checkbox-group">
-                <input type="checkbox" id="second-chance" checked>
-                <span>تفعيل وضع (فرصة ثانية لاختيار إجابة أخرى في حال الخطأ)</span>
-            </label>
-        </div>
-
-        <button class="btn" onclick="startQuiz()">ابدأ اختبار التحدي الآن</button>
+        <button class="btn btn-primary" onclick="startQuiz()">Start Challenge</button>
     </div>
 
     <div id="quiz-screen" class="quiz-screen">
-        <div class="quiz-header">
-            <div class="progress" id="progress-text">سؤال 1 من 20</div>
-            <div class="timer" id="timer-text">الوقت المتبقي: 00:00</div>
+        <div id="progress">Question 1 of 20</div>
+        <h2 id="question-text" style="margin: 20px 0;">Loading...</h2>
+        <div id="options-container"></div>
+        
+        <div class="nav-buttons">
+            <div>
+                <button class="btn btn-secondary" onclick="prevQuestion()">Previous</button>
+                <button class="btn btn-primary" onclick="nextQuestion()">Next</button>
+            </div>
+            <button class="btn btn-primary" id="submit-btn" onclick="confirmAnswer()">Confirm & Check</button>
         </div>
-
-        <div class="question-box" id="question-text">تحميل نص السؤال...</div>
-        <ul class="options-list" id="options-container">
-            </ul>
-
-        <div id="feedback" class="feedback-msg"></div>
-
-        <button class="btn" id="next-btn" style="display: none;" onclick="nextQuestion()">السؤال التالي</button>
+        <div id="feedback" style="margin-top: 20px; font-weight: bold;"></div>
     </div>
 
     <div id="result-screen" class="result-screen">
-        <h2>اكتمل الاختبار بنجاح!</h2>
-        <div class="score-circle" id="score-display">00%</div>
-        <div class="summary-text" id="summary-display">لقد أجبت بشكل صحيح على 0 من أصل 0 أسئلة.</div>
-        <button class="btn" onclick="resetQuiz()">إعادة تعيين وبدء اختبار جديد</button>
+        <h2>Quiz Completed!</h2>
+        <div id="score-display" style="font-size: 2em; font-weight: bold; margin: 20px 0;"></div>
+        <button class="btn btn-primary" onclick="location.reload()">Restart</button>
     </div>
 </div>
 
@@ -491,169 +263,67 @@
         { q: "When conducting interviews for a risk assessment, which group of individuals is typically prioritized for providing insights?", o: ["Entry-level employees and interns", "C-level executives, EVPs, SVPs, or VPs from various departments", "External auditors only", "Customers and vendors"], a: 1 }
     ];
 
-    let quizQuestions = [];
-    let currentQuestionIndex = 0;
-    let score = 0;
-    let timerInterval = null;
-    let totalSeconds = 0;
-    let secondChanceUsed = false;
-    let isSecondChanceEnabled = true;
+   
+let quizQuestions = [], currentQuestionIndex = 0, score = 0, userAnswers = {};
 
-    // دالة بدء الاختبار وتهيئة الإعدادات
     function startQuiz() {
-        const countInput = document.getElementById('question-count').value;
-        const timeInput = document.getElementById('quiz-time').value;
-        isSecondChanceEnabled = document.getElementById('second-chance').checked;
-
-        let numQuestions = parseInt(countInput);
-        if (isNaN(numQuestions) || numQuestions < 1) numQuestions = 20;
-        if (numQuestions > allQuestions.length) numQuestions = allQuestions.length;
-
-        let minutes = parseInt(timeInput);
-        if (isNaN(minutes) || minutes < 1) minutes = 15;
-
-        // خلط الأسئلة عشوائياً لاختيار العدد المطلوب بدقة وبشكل حيوي
-        const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
-        quizQuestions = shuffled.slice(0, numQuestions);
-
-        currentQuestionIndex = 0;
-        score = 0;
-        totalSeconds = minutes * 60;
-
+        const count = document.getElementById('question-count').value;
+        quizQuestions = [...allQuestions].sort(() => 0.5 - Math.random()).slice(0, count);
         document.getElementById('setup-screen').style.display = 'none';
         document.getElementById('quiz-screen').style.display = 'block';
-        document.getElementById('result-screen').style.display = 'none';
-
-        startTimer();
         showQuestion();
     }
 
-    // دالة إدارة المؤقت الزمني التنازلي
-    function startTimer() {
-        clearInterval(timerInterval);
-        updateTimerDisplay();
-        timerInterval = setInterval(() => {
-            totalSeconds--;
-            updateTimerDisplay();
-            if (totalSeconds <= 0) {
-                clearInterval(timerInterval);
-                alert('انتهى الوقت الإجمالي المخصص للاختبار!');
-                endQuiz();
-            }
-        }, 1000);
-    }
-
-    function updateTimerDisplay() {
-        const m = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
-        const s = (totalSeconds % 60).toString().padStart(2, '0');
-        document.getElementById('timer-text').innerText = `الوقت المتبقي: ${m}:${s}`;
-    }
-
-    // دالة عرض السؤال الحالي والخيارات المرتبطة به
     function showQuestion() {
-        secondChanceUsed = false;
-        document.getElementById('next-btn').style.display = 'none';
-        document.getElementById('feedback').style.display = 'none';
-
-        const currentQuestion = quizQuestions[currentQuestionIndex];
-        document.getElementById('progress-text').innerText = `سؤال ${currentQuestionIndex + 1} من ${quizQuestions.length}`;
-        document.getElementById('question-text').innerText = currentQuestion.q;
-
-        const optionsContainer = document.getElementById('options-container');
-        optionsContainer.innerHTML = '';
-
-        currentQuestion.o.forEach((option, index) => {
-            const li = document.createElement('li');
-            li.className = 'option-item';
-            li.innerText = option;
-            li.onclick = () => checkAnswer(li, index);
-            optionsContainer.appendChild(li);
+        const q = quizQuestions[currentQuestionIndex];
+        document.getElementById('progress').innerText = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+        document.getElementById('question-text').innerText = q.q;
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
+        q.o.forEach((opt, idx) => {
+            const div = document.createElement('div');
+            div.className = `option-item ${userAnswers[currentQuestionIndex] === idx ? 'selected' : ''}`;
+            div.innerText = opt;
+            div.onclick = () => {
+                userAnswers[currentQuestionIndex] = idx;
+                document.querySelectorAll('.option-item').forEach(el => el.classList.remove('selected'));
+                div.classList.add('selected');
+            };
+            container.appendChild(div);
         });
     }
 
-    // دالة التحقق الذكي من الإجابة مع دعم ميزة "فرصة اختيار إجابة أخرى"
-    function checkAnswer(selectedLi, selectedIndex) {
-        // حظر النقر إذا كان السؤال قد تم حله وتأكيده بالفعل
-        if (document.getElementById('next-btn').style.display === 'block') return;
-
-        const currentQuestion = quizQuestions[currentQuestionIndex];
+    function confirmAnswer() {
+        const q = quizQuestions[currentQuestionIndex];
         const feedback = document.getElementById('feedback');
-
-        if (selectedIndex === currentQuestion.a) {
-            // إجابة صحيحة
-            selectedLi.classList.add('correct');
-            feedback.className = 'feedback-msg';
-            feedback.style.backgroundColor = 'rgba(34, 197, 94, 0.2)';
-            feedback.style.color = 'var(--success)';
-            feedback.innerText = 'أحسنت! إجابة صحيحة نموذجية.';
-            feedback.style.display = 'block';
-            score++;
-            revealAll();
+        if (userAnswers[currentQuestionIndex] === q.a) {
+            feedback.innerText = "Correct!";
+            feedback.style.color = "var(--success)";
         } else {
-            // إجابة خاطئة
-            if (isSecondChanceEnabled && !secondChanceUsed) {
-                secondChanceUsed = true;
-                selectedLi.classList.add('wrong');
-                selectedLi.style.pointerEvents = 'none'; // حظر النقر على هذا الخيار الخاطئ مجدداً
-                feedback.className = 'feedback-msg';
-                feedback.style.backgroundColor = 'rgba(245, 158, 11, 0.2)';
-                feedback.style.color = 'var(--warning)';
-                feedback.innerText = 'إجابة غير صحيحة! لديك فرصة ثانية لاختيار إجابة أخرى، حاول مجدداً.';
-                feedback.style.display = 'block';
-            } else {
-                // استنفذ الفرص أو الميزة غير مفعلة
-                selectedLi.classList.add('wrong');
-                feedback.className = 'feedback-msg';
-                feedback.style.backgroundColor = 'rgba(239, 68, 68, 0.2)';
-                feedback.style.color = 'var(--error)';
-                feedback.innerText = 'إجابة خاطئة!';
-                feedback.style.display = 'block';
-                revealAll();
-            }
+            feedback.innerText = "Incorrect. The correct answer was: " + q.o[q.a];
+            feedback.style.color = "var(--error)";
         }
-    }
-
-    // إظهار الإجابة الصحيحة وتفعيل زر الانتقال للتالي
-    function revealAll() {
-        const currentQuestion = quizQuestions[currentQuestionIndex];
-        const items = document.getElementById('options-container').children;
-        
-        // إبراز الخيار الصحيح باللون الأخضر
-        if(items[currentQuestion.a]) {
-            items[currentQuestion.a].classList.add('correct');
-        }
-        
-        // إيقاف الفعاليات على باقي الاختيارات
-        for (let item of items) {
-            item.style.cursor = 'default';
-        }
-        document.getElementById('next-btn').style.display = 'block';
     }
 
     function nextQuestion() {
-        currentQuestionIndex++;
-        if (currentQuestionIndex < quizQuestions.length) {
+        if (currentQuestionIndex < quizQuestions.length - 1) {
+            currentQuestionIndex++;
             showQuestion();
         } else {
             endQuiz();
         }
     }
 
-    // شاشة عرض التقرير النهائي
-    function endQuiz() {
-        clearInterval(timerInterval);
-        document.getElementById('quiz-screen').style.display = 'none';
-        document.getElementById('result-screen').style.display = 'block';
-
-        const percentage = Math.round((score / quizQuestions.length) * 100);
-        document.getElementById('score-display').innerText = `${percentage}%`;
-        document.getElementById('summary-display').innerText = `لقد أجبت بشكل صحيح على ${score} من أصل ${quizQuestions.length} سؤالاً.`;
+    function prevQuestion() {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            showQuestion();
+        }
     }
 
-    function resetQuiz() {
-        document.getElementById('setup-screen').style.display = 'block';
+    function endQuiz() {
         document.getElementById('quiz-screen').style.display = 'none';
-        document.getElementById('result-screen').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'block';
     }
 </script>
 
