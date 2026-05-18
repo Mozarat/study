@@ -396,8 +396,6 @@
         { q: "What is the main purpose of risk analysis in information security risk assessment?", o: ["To identify the sources and causes of risk", "To evaluate the residual risk after applying controls", "To estimate the level of risk for each threat scenario", "To determine the appropriate risk treatment options"], a: 2 },
         { q: "When conducting interviews for a risk assessment, which group of individuals is typically prioritized for providing insights?", o: ["Entry-level employees and interns", "C-level executives, EVPs, SVPs, or VPs from various departments", "External auditors only", "Customers and vendors"], a: 1 }
     ];
-
-   
     let quiz = [];
     let currentIdx = 0;
     let answers = {};
@@ -407,8 +405,8 @@
     let totalTimeInSeconds = 0;
 
     function startQuiz() {
-        const countInput = parseInt(document.getElementById('question-count').value) || 20;
-        const timeInput = parseInt(document.getElementById('time-limit').value) || 15;
+        const countInput = parseInt(document.getElementById('question-count').value) || 35;
+        const timeInput = parseInt(document.getElementById('time-limit').value) || 60;
         
         let actualCount = countInput > allQuestions.length ? allQuestions.length : countInput;
         quiz = [...allQuestions].sort(() => 0.5 - Math.random()).slice(0, actualCount);
