@@ -2,67 +2,47 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cybersecurity Risk Assessment Trainer</title>
     <style>
         :root {
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --primary-color: #2563eb;
-            --text-color: #1e293b;
-            --success: #16a34a;
-            --error: #dc2626;
-            --border: #e2e8f0;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #38bdf8;
+            --text: #f8fafc;
         }
-
-        body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Segoe UI', sans-serif; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
-        .container { width: 100%; max-width: 800px; background: var(--card-bg); padding: 40px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        h1 { color: var(--primary-color); margin-bottom: 10px; }
-        
-        .option-item { border: 2px solid var(--border); padding: 15px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: 0.2s; }
-        .option-item:hover { border-color: var(--primary-color); }
-        .option-item.selected { border-color: var(--primary-color); background: #eff6ff; }
-        
-        .btn { padding: 12px 24px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: 0.3s; margin: 5px; }
-        .btn-primary { background: var(--primary-color); color: white; }
-        .btn-secondary { background: var(--border); color: var(--text-color); }
-        
-        .quiz-screen, .result-screen { display: none; }
-        .nav-buttons { margin-top: 20px; display: flex; justify-content: space-between; }
+        body { background-color: var(--bg-color); color: var(--text); font-family: sans-serif; display: flex; justify-content: center; padding: 20px; }
+        .container { width: 100%; max-width: 700px; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        h1 { color: var(--accent); text-align: center; }
+        .option-item { border: 1px solid #475569; padding: 15px; margin: 10px 0; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .option-item:hover { background: #334155; }
+        .option-item.selected { border-color: var(--accent); background: #0ea5e922; }
+        .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; background: var(--accent); color: #000; font-weight: bold; margin: 5px; }
+        .nav-group { display: flex; justify-content: space-between; margin-top: 20px; }
+        #feedback { margin-top: 15px; font-weight: bold; padding: 10px; border-radius: 6px; display: none; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div id="setup-screen">
-        <h1>Risk Assessment Trainer</h1>
-        <p>Configure your study session:</p>
-        <div style="margin: 20px 0;">
-            <label>Number of questions:</label>
-            <input type="number" id="question-count" value="20" style="width: 100%; padding: 10px; margin-top: 5px;">
-        </div>
-        <button class="btn btn-primary" onclick="startQuiz()">Start Challenge</button>
+        <h1>Cybersecurity Pre-test</h1>
+        <label>Number of Questions:</label>
+        <input type="number" id="question-count" value="20" style="width:100%; padding:10px; margin:10px 0; border-radius:5px;">
+        <button class="btn" style="width:100%" onclick="startQuiz()">Start Test</button>
     </div>
 
-    <div id="quiz-screen" class="quiz-screen">
-        <div id="progress">Question 1 of 20</div>
-        <h2 id="question-text" style="margin: 20px 0;">Loading...</h2>
+    <div id="quiz-screen" style="display:none;">
+        <div id="progress">Question 1/20</div>
+        <h3 id="question-text"></h3>
         <div id="options-container"></div>
-        
-        <div class="nav-buttons">
+        <div id="feedback"></div>
+        <div class="nav-group">
             <div>
-                <button class="btn btn-secondary" onclick="prevQuestion()">Previous</button>
-                <button class="btn btn-primary" onclick="nextQuestion()">Next</button>
+                <button class="btn" onclick="prevQuestion()">Previous</button>
+                <button class="btn" onclick="nextQuestion()">Next</button>
             </div>
-            <button class="btn btn-primary" id="submit-btn" onclick="confirmAnswer()">Confirm & Check</button>
+            <button class="btn" style="background:#22c55e" onclick="confirmAnswer()">Confirm Answer</button>
         </div>
-        <div id="feedback" style="margin-top: 20px; font-weight: bold;"></div>
-    </div>
-
-    <div id="result-screen" class="result-screen">
-        <h2>Quiz Completed!</h2>
-        <div id="score-display" style="font-size: 2em; font-weight: bold; margin: 20px 0;"></div>
-        <button class="btn btn-primary" onclick="location.reload()">Restart</button>
     </div>
 </div>
 
@@ -268,63 +248,44 @@ let quizQuestions = [], currentQuestionIndex = 0, score = 0, userAnswers = {};
 
     function startQuiz() {
         const count = document.getElementById('question-count').value;
-        quizQuestions = [...allQuestions].sort(() => 0.5 - Math.random()).slice(0, count);
+        quiz = allQuestions.sort(() => 0.5 - Math.random()).slice(0, count);
         document.getElementById('setup-screen').style.display = 'none';
         document.getElementById('quiz-screen').style.display = 'block';
-        showQuestion();
+        showQ();
     }
 
-    function showQuestion() {
-        const q = quizQuestions[currentQuestionIndex];
-        document.getElementById('progress').innerText = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+    function showQ() {
+        const q = quiz[currentIdx];
+        document.getElementById('progress').innerText = `Question ${currentIdx + 1} / ${quiz.length}`;
         document.getElementById('question-text').innerText = q.q;
-        const container = document.getElementById('options-container');
-        container.innerHTML = '';
-        q.o.forEach((opt, idx) => {
+        const cont = document.getElementById('options-container');
+        cont.innerHTML = '';
+        q.o.forEach((opt, i) => {
             const div = document.createElement('div');
-            div.className = `option-item ${userAnswers[currentQuestionIndex] === idx ? 'selected' : ''}`;
+            div.className = `option-item ${answers[currentIdx] === i ? 'selected' : ''}`;
             div.innerText = opt;
             div.onclick = () => {
-                userAnswers[currentQuestionIndex] = idx;
+                answers[currentIdx] = i;
                 document.querySelectorAll('.option-item').forEach(el => el.classList.remove('selected'));
                 div.classList.add('selected');
             };
-            container.appendChild(div);
+            cont.appendChild(div);
         });
     }
 
     function confirmAnswer() {
-        const q = quizQuestions[currentQuestionIndex];
-        const feedback = document.getElementById('feedback');
-        if (userAnswers[currentQuestionIndex] === q.a) {
-            feedback.innerText = "Correct!";
-            feedback.style.color = "var(--success)";
+        const f = document.getElementById('feedback');
+        f.style.display = 'block';
+        if(answers[currentIdx] === quiz[currentIdx].a) {
+            f.innerText = "Correct!"; f.style.background = "#065f46";
         } else {
-            feedback.innerText = "Incorrect. The correct answer was: " + q.o[q.a];
-            feedback.style.color = "var(--error)";
+            f.innerText = "Wrong. Correct was: " + quiz[currentIdx].o[quiz[currentIdx].a];
+            f.style.background = "#991b1b";
         }
     }
 
-    function nextQuestion() {
-        if (currentQuestionIndex < quizQuestions.length - 1) {
-            currentQuestionIndex++;
-            showQuestion();
-        } else {
-            endQuiz();
-        }
-    }
-
-    function prevQuestion() {
-        if (currentQuestionIndex > 0) {
-            currentQuestionIndex--;
-            showQuestion();
-        }
-    }
-
-    function endQuiz() {
-        document.getElementById('quiz-screen').style.display = 'none';
-        document.getElementById('result-screen').style.display = 'block';
-    }
+    function nextQuestion() { if(currentIdx < quiz.length -1) { currentIdx++; showQ(); document.getElementById('feedback').style.display = 'none'; } }
+    function prevQuestion() { if(currentIdx > 0) { currentIdx--; showQ(); document.getElementById('feedback').style.display = 'none'; } }
 </script>
 
 </body>
